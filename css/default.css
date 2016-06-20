@@ -1,0 +1,19 @@
+/* Default Content */
+body, html{
+    width: 100%;
+}
+
+body { 
+    /* Opmaak */
+    padding-top: 50px;
+    
+    /* Tekst opmaak */
+    text-align: justify;
+}
+
+/* Banner */
+#banner{
+    height: 300px;
+    margin-bottom: 10px;
+    background-size: auto;
+}
