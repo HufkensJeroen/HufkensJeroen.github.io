@@ -38,9 +38,17 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Foto<span class="caret"></span></a>
                         <ul class="dropdown-menu inverse-dropdown">
-                            <li><a href="Galerijen.php?galerijnr=8">Klasfoto's</a></li>
+                            <li><a href="Galerijen.php?galerijnr=0">Klasfoto's</a></li>
                             <li><a href="Galerijen.php?galerijnr=1">Dag 1</a></li>
                             <li><a href="Galerijen.php?galerijnr=2">Dag 2</a></li>
+                            <li><a href="Galerijen.php?galerijnr=3">Dag 3</a></li>
+                            <li><a href="Galerijen.php?galerijnr=4">Dag 4</a></li>
+                            <li><a href="Galerijen.php?galerijnr=5">Dag 5</a></li>
+                            <li><a href="Galerijen.php?galerijnr=6">Dag 6</a></li>
+                            <li><a href="Galerijen.php?galerijnr=7">Dag 7</a></li>
+                            <li><a href="Galerijen.php?galerijnr=8">Dag 8</a></li>
+                            <li><a href="Galerijen.php?galerijnr=9">Dag 9</a></li>
+                            <li><a href="Galerijen.php?galerijnr=10">Dag 10</a></li>
                         </ul>
                     </li>
                     <li><a href="../kader.html">Kader</a></li>
@@ -132,10 +140,19 @@
                     echo("</row></div>");
                 }
         ?>
+        
+        
 
         <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
         <script src="js/bootstrap-image-gallery.min.js"></script>
     </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="vertical-center">
+            <p style="padding-top:2em;">Design: Jeroen <span style="margin-left: 1em; margin-right: 1em;">-</span> &#9400; Jeroen &amp; Top Vakantie</p>
+        </div>
+    </footer>
 </body>
 
 </html>

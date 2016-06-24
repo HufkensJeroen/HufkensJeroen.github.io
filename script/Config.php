@@ -105,19 +105,19 @@
 
      //begin instellingen album 8
      //Albumnaam instellen d.m.v. array
-     $album[8] = "Klasfoto";
+     $album[0] = "Klasfoto";
     
      //Bestandsnamen en mappen instellen
-     $thumbmap[8] = "../pictures/klasfotothumb/";
-     $grootmap[8] = "../pictures/klasfotogroot/";
-     $bestandsnaam[8] = "klasfoto";
-     $extensie[8] = ".jpg";
+     $thumbmap[0] = "../pictures/klasfotothumb/";
+     $grootmap[0] = "../pictures/klasfotogroot/";
+     $bestandsnaam[0] = "klasfoto";
+     $extensie[0] = ".jpg";
 
      //begin- en eindnumer van de foto's instellen
-     $beginnr[8] = 1;
+     $beginnr[0] = 1;
 
      //aantal foto's in de galerij
-     $aantal[8] = 2;
+     $aantal[0] = 2;
      //einde instellingen album 8
      
 ?>
