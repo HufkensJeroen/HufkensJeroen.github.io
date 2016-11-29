@@ -31,7 +31,7 @@
                     <li><a href="#"><i class="material-icons">home</i>Home</a></li>
                     <li><a href="#scope"><i class="material-icons">description</i>Opdracht</a></li>
                     <li><a href="#update"><i class="material-icons">update</i>Updates</a></li>
-                    <!--<li><a href="#code"><i class="material-icons">code</i>Code & Schema</a></li>-->
+                    <li><a href="#code"><i class="material-icons">code</i>Code & Schema</a></li>
                 </ul>
             </div>
         </div>
@@ -62,17 +62,17 @@
             </p>
             <div class="progress">
                 <div class="progress-bar progress-bar-success progress-bar-striped"        data-toggle="Complete" data-placement="top" title="5% Complete"
-                     style="width: 5%">
+                     style="width: 10%">
                     <span class="sr-only">Complete</span>
                 </div>
                 <div class="progress-bar progress-bar-warning progress-bar-striped"
                      data-toggle="InProgress" data-placement="top" title="5% In Progress"
-                     style="width: 5%">
+                     style="width: 10%">
                     <span class="sr-only">In Progress</span>
                 </div>
                 <div class="progress-bar progress-bar-danger progress-bar-striped"
                      data-toggle="NotDone" data-placement="top" title="90% Not Done"
-                     style="width: 90%">
+                     style="width: 80%">
                     <span class="sr-only">Not Done</span>
                 </div>
             </div>
@@ -86,8 +86,8 @@
                     <div class="nav-tabs-wrapper">
                         <ul class="nav nav-tabs" data-tabs="tabs">
                             <li class="active"><a data-toggle="tab" href="#home">Start</a></li>
-                            <!--<li><a data-toggle="tab" href="#menu1">Update 1</a></li>
-                            <li><a data-toggle="tab" href="#menu2">Update 2</a></li>
+                            <li><a data-toggle="tab" href="#menu1">Update 1</a></li>
+                            <!--<li><a data-toggle="tab" href="#menu2">Update 2</a></li>
                             <li><a data-toggle="tab" href="#menu3">Update 3</a></li>-->
                         </ul>
                     </div>
@@ -99,10 +99,16 @@
                         <p>Deze week beginnen we aan het uitwerken van het schema voor het project. Eens dit af is kunnen we beginnen met het
                         bouwen van het systeem. Waarna we onze code kunnen beginnen schrijven.</p>
                     </div>
-                    <!--<div id="menu1" class="tab-pane fade">
-                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <div id="menu1" class="tab-pane fade">
+                        <p>
+                            De voorbije week heb ik mijn schema opgebouwd zonder lcd. De basis werkt en de ethernet schield krijgt zijn ip address.
+                            De data die de arduino verkrijgt wordt al omgerekend voor temperatuur, voor het licht maakt dit niet zo veel uit.
+                            Aan de hand van volgende foto's kan je zien hoe de huidige setup eruit ziet.<br><br>
+                            <img alt="" src="img/IMG_20161129_112537.jpg"><br>
+                            <img alt="" src="img/IMG_20161129_112638.jpg">
+                        </p>
                     </div>
-                    <div id="menu2" class="tab-pane fade">
+                    <!--<div id="menu2" class="tab-pane fade">
                         <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
                     </div>
                     <div id="menu3" class="tab-pane fade">
@@ -112,26 +118,66 @@
             </div>
         </div>
         <!-- Code -->
-        <!--
+        
         <hr>
         <h2 id="code"><i class="material-icons">code</i> Code & Schema</h2>
         <div>
             <pre>
-#define SWITCH 3
-#define LED 13
+#include <SPI.h>
+#include <Ethernet2.h>
 
-void setup() {
-    pinMode(SWITCH, INPUT);
-    pinMode(LED, OUTPUT);
+#define LDR A1
+#define TEMP A0
+
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+char server[] = "www.google.com";
+IPAddress ip(192, 168, 2, 102);
+EthernetClient client;
+
+void setup(){
+  Serial.begin(9600);
+
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure using DHCP");
+    Ethernet.begin(mac, ip); // try without DHCP:
+  }
+  delay(1000); // give shield time to initialize
+
+  if (client.connect(server, 80)) {
+    Serial.println("connected to server");
+    client.println("GET /search?q=arduino HTTP/1.1");
+    client.println("Host: www.google.com");
+    client.println("Connection: close");
+    client.println();
+  } else {
+    Serial.println("connection failed");
+  }
 }
 
-void loop() {
-    int s = digitalRead(SWITCH);
-    digitalWrite(LED, s);
+void loop(){
+  while (client.available()) {
+    char c = client.read();
+    Serial.print(c);
+  }
+  Serial.println("Network state: Running");
+  
+  int value2 = analogRead(TEMP);
+  Serial.print("Temp: ");
+  Serial.println(value2);
+  float voltage = (value2/1024.0)*5.0;
+  Serial.print("Volt: ");
+  Serial.println(voltage);
+  float temperatuur = (voltage - 0.5)*100;
+  Serial.print("Temp in C: ");
+  Serial.println(temperatuur);
+  int value = analogRead(LDR);
+  Serial.print("LDR: ");
+  Serial.println(value);
+  delay(10000);
 }
             </pre>
         </div>
-    </div>-->
+    </div>
     
     <!-- Footer -->
     <footer>
