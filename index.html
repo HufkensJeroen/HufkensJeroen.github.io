@@ -62,18 +62,18 @@
             </p>
             <div class="progress">
                 <div class="progress-bar progress-bar-success progress-bar-striped"       
-                     data-toggle="Complete" data-placement="top" title="25% Complete"
-                     style="width: 25%">
+                     data-toggle="Complete" data-placement="top" title="60% Complete"
+                     style="width: 60%">
                     <span class="sr-only">Complete</span>
                 </div>
                 <div class="progress-bar progress-bar-warning progress-bar-striped"
-                     data-toggle="InProgress" data-placement="top" title="25% In Progress"
-                     style="width: 25%">
+                     data-toggle="InProgress" data-placement="top" title="30% In Progress"
+                     style="width: 30%">
                     <span class="sr-only">In Progress</span>
                 </div>
                 <div class="progress-bar progress-bar-danger progress-bar-striped"
-                     data-toggle="NotDone" data-placement="top" title="50% Not Done"
-                     style="width: 50%">
+                     data-toggle="NotDone" data-placement="top" title="10% Not Done"
+                     style="width: 10%">
                     <span class="sr-only">Not Done</span>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                             <li class="active"><a data-toggle="tab" href="#home">Start</a></li>
                             <li><a data-toggle="tab" href="#menu1">Update 1</a></li>
                             <li><a data-toggle="tab" href="#menu2">Update 2</a></li>
-                            <!--<li><a data-toggle="tab" href="#menu3">Update 3</a></li>-->
+                            <li><a data-toggle="tab" href="#menu3">Update 3</a></li>
                         </ul>
                     </div>
                 </div>
@@ -115,13 +115,17 @@
                             Op de moment ben ik aan het uitzoeken om MQTT op mijn raspberry pi te installeren om via hier de data 
                             te kunnen wegschrijven naar een databank waarna ik deze data uitlees op een website. Het is de bedoeling om
                             van deze data een grafiek te kunnen maken over een bepaalde tijd. Evens moet de huidige waarde op de website
-                            worden aangepast op constante basis, dit wordt bepaald door de arduino zelf. 
+                            worden aangepast op constante basis, dit wordt bepaald door de arduino zelf.<br><br> 
                             <img width="100%" alt="" src="img/IMG_20161206_100412.jpg">
                         </p>
                     </div>
-                    <!--<div id="menu3" class="tab-pane fade">
-                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                    </div>-->
+                    <div id="menu3" class="tab-pane fade">
+                        <p>
+                            MQTT is ondertussen geïnstalleerd op de Raspberry PI en vanuit de arduino wordt de data naar MQTT doorgestuurd. Op de PI staat ook een MySQL server waar de data aan de hand van een python script naartoe wordt geschreven vanuit MQTT. Voor het python script te maken heb ik gebruik gemaakt van een online gevonden <a href="https://gist.github.com/matbor/6532185" target="_blank">script</a>. Deze heb ik aangepast aan mijn normen voor mijn project. De momenteel finale code voor de arduino en mijn aangepast python script zet ik spoedig online.
+                            <br><br>Ook heb ik het projectje in een "doos" kunnen inbouwen zodat ik deze makkelijker kan meenemen(zie foto). Het is nu de bedoeling om de website te beginnen opbouwen waar je de data kan bekijken en waar je constant de huidige waarde kan bekijken. Na kort onderzoek ga ik dit doen aan de hand van de databank zelf. Zo ga ik elke x aantal seconden de data ophalen vergelijken met de huidige waarde op de website en deze aanpassen indien deze gewijzigd zijn.<br><br>
+                            <img width="100%" alt="" src="img/IMG_20161213_201511.jpg">
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -207,7 +211,7 @@ void loop(){
     <!-- Footer -->
     <footer>
         <div class="vertical-center">
-            <p style="padding-top:1em;">Design En Copyright Jeroen - Powered By: Arduino & Raspberry Pi</p>
+            <p style="padding-top:1em;">Design & Copyright Jeroen - Powered By: Arduino & Raspberry Pi</p>
         </div>
     </footer>
 </body>
