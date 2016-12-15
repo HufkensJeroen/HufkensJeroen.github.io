@@ -135,22 +135,38 @@
         <h2 id="code"><i class="material-icons">code</i> Code & Schema</h2>
         <div>
             <pre>
-#include &lt; LiquidCrystal_I2C.h &gt;
-#include &lt; SPI.h &gt;
-#include &lt; Ethernet2.h &gt;
+Arduino Code
+
+#include &lt;PubSubClient.h&gt;
+#include &lt;LiquidCrystal_I2C.h&gt;
+#include &lt;SPI.h&gt;
+#include &lt;Ethernet2.h&gt;
 
 #define LDR A1
 #define TEMP A0
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-char server[] = "www.google.com";
+IPAddress server(192, 168, 2, 101);
 IPAddress ip(192, 168, 2, 102);
-EthernetClient client;
+EthernetClient ethClient;
+PubSubClient client(ethClient);
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 
+void setup_eth() {
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure using DHCP");
+    Ethernet.begin(mac, ip); // try without DHCP:
+  }
+  delay(1000); // give shield time to initialize
+}
+
 void setup(){
   Serial.begin(9600);
+  setup_eth();
+
+  client.setServer(server, 1883);
+  client.setCallback(callback);
   
   lcd.begin(16,2);
   for(int i = 0; i< 3; i++)
@@ -161,30 +177,13 @@ void setup(){
     delay(250);
   }
   lcd.backlight();
-  
-  if (Ethernet.begin(mac) == 0) {
-    Serial.println("Failed to configure using DHCP");
-    Ethernet.begin(mac, ip); // try without DHCP:
-  }
-  delay(1000); // give shield time to initialize
-
-  if (client.connect(server, 80)) {
-    Serial.println("connected to server");
-    client.println("GET /search?q=arduino HTTP/1.1");
-    client.println("Host: www.google.com");
-    client.println("Connection: close");
-    client.println();
-  } else {
-    Serial.println("connection failed");
-  }
 }
 
 void loop(){
-  while (client.available()) {
-    char c = client.read();
-    Serial.print(c);
+  if (!client.connected()) {
+    reconnect();
   }
-  Serial.println("Network state: Running");
+  client.loop();
   
   int value2 = analogRead(TEMP);
   float voltage = (value2/1024.0)*5.0;
@@ -194,14 +193,148 @@ void loop(){
   lcd.setCursor(0,0);
   lcd.print("Temp in C: ");
   lcd.print(temperatuur);
-  int value = analogRead(LDR);
+  int licht = analogRead(LDR);
   Serial.print("LDR: ");
-  Serial.println(value);
+  Serial.println(licht);
   lcd.setCursor(6,1);
   lcd.print("LDR: ");
-  lcd.print(value);
-  delay(1000);
+  lcd.print(licht);
+  lcd.print(" ");
+  sentData(licht, temperatuur);
+  delay(10000);
 }
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] ");
+  for (int i=0;i&lt;length;i++) {
+    Serial.print((char)payload[i]);
+  }
+  Serial.println();
+}
+
+void reconnect() {
+  // Loop until we're reconnected
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    // Attempt to connect
+    if (client.connect("arduinoClient")) {
+      Serial.println("connected");
+      // Once connected, publish an announcement...
+      client.publish("outTopic","hello world");
+      // ... and resubscribe
+      client.subscribe("inTopic");
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 5 seconds before retrying
+      delay(5000);
+    }
+  }
+}
+
+void sentData(int ldr, float tempa){
+  String s1 = "T";
+  String s2 = String(tempa);
+  String s3 = "L";
+  String s4 = String(ldr);
+  String comb = String(s1 + s2 + s3 + s4);
+  client.publish("outTopic",comb.c_str());
+  client.subscribe("inTopic");
+}
+
+
+Python Conf + Script
+
+{
+ "debug"           : 0,
+ "broker"          : "localhost",
+ "broker_port"     : 1883,
+ "broker_username" : "",
+ "broker_password" : "",
+ "broker_clientid" : "arduino_MQTT_sql",
+ "mysql_server"    : "localhost",
+ "mysql_username"  : "root",
+ "mysql_passwd"    : "azerty",
+ "mysql_db"        : "mqtt",
+ "mysql_table"     : "arduino"
+}
+
+#!/usr/bin/python
+
+import MySQLdb
+import paho.mqtt.client as mosquitto
+import json
+import time
+
+config = json.load(open('./myscript.conf'))
+
+broker_topic = 'outTopic'
+
+# Open database connection
+db = MySQLdb.connect(config['mysql_server'], config['mysql_username'],
+config['mysql_passwd'], config['mysql_db'])
+# prepare a cursor object using cursor() method
+cursor = db.cursor()
+
+def on_connect(mosq, obj, rc):
+    if config['debug']: print("rc: "+str(rc))
+
+def on_message(mosq, obj, msg):
+    if config['debug']: print(msg.topic+" "+str(msg.qos)+" "+str(msg.payload))
+
+    try:
+       # Execute the SQL command
+       # change locations to the table you are using
+       queryText = "INSERT INTO %s VALUES (now(),%r);"
+       queryArgs = ( tuple([ config['mysql_table'], MySQLdb.escape_string(msg.payload) ]))
+       cursor.execute(queryText % queryArgs)
+       if config['debug']: print('Successfully Added record to mysql')
+       db.commit()
+    except MySQLdb.Error, e:
+        try:
+            print "MySQL Error [%d]: %s" % (e.args[0], e.args[1])
+        except IndexError:
+            print "MySQL Error: %s" % str(e)
+        # Rollback in case there is any error
+        db.rollback()
+        print('ERROR adding record to MYSQL')
+
+def on_publish(mosq, obj, mid):
+    print("mid: "+str(mid))
+
+def on_subscribe(mosq, obj, mid, granted_qos):
+    if config['debug']: print("Subscribed: "+str(mid)+" "+str(granted_qos))
+
+def on_log(mosq, obj, level, string):
+    if config['debug']: print(string)
+
+mqttc = mosquitto.Mosquitto(config['broker_clientid'], clean_session=True )
+mqttc.on_message = on_message
+mqttc.on_connect = on_connect
+mqttc.on_publish = on_publish
+mqttc.on_subscribe = on_subscribe
+
+# Uncomment to enable config['debug'] messages
+mqttc.on_log = on_log
+
+mqttc.username_pw_set(config['broker_username'], password = config['broker_password'])
+
+mqttc.connect(config['broker'], config['broker_port'], 60)
+mqttc.subscribe(broker_topic, 0)
+
+rc = 0
+while rc == 0:
+    rc = mqttc.loop()
+
+if config['debug']: print("rc: "+str(rc))
+
+# disconnect from server
+print ('Disconnected, done.')
+db.close()
+
 
 <img alt="" src="img/Schema_V0.png">
             </pre>
