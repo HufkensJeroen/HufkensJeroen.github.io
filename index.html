@@ -31,6 +31,7 @@
                     <li><a href="#"><i class="material-icons">home</i>Home</a></li>
                     <li><a href="#scope"><i class="material-icons">description</i>Opdracht</a></li>
                     <li><a href="#update"><i class="material-icons">update</i>Updates</a></li>
+                    <li><a href="#download"><i class="material-icons">file_download</i>Download</a></li>
                     <li><a href="#code"><i class="material-icons">code</i>Code & Schema</a></li>
                 </ul>
             </div>
@@ -62,18 +63,18 @@
             </p>
             <div class="progress">
                 <div class="progress-bar progress-bar-success progress-bar-striped"       
-                     data-toggle="Complete" data-placement="top" title="60% Complete"
-                     style="width: 60%">
+                     data-toggle="Complete" data-placement="top" title="100% Complete"
+                     style="width: 100%">
                     <span class="sr-only">Complete</span>
                 </div>
                 <div class="progress-bar progress-bar-warning progress-bar-striped"
-                     data-toggle="InProgress" data-placement="top" title="30% In Progress"
-                     style="width: 30%">
+                     data-toggle="InProgress" data-placement="top" title="0% In Progress"
+                     style="width: 0%">
                     <span class="sr-only">In Progress</span>
                 </div>
                 <div class="progress-bar progress-bar-danger progress-bar-striped"
-                     data-toggle="NotDone" data-placement="top" title="10% Not Done"
-                     style="width: 10%">
+                     data-toggle="NotDone" data-placement="top" title="0% Not Done"
+                     style="width: 0%">
                     <span class="sr-only">Not Done</span>
                 </div>
             </div>
@@ -90,6 +91,9 @@
                             <li><a data-toggle="tab" href="#menu1">Update 1</a></li>
                             <li><a data-toggle="tab" href="#menu2">Update 2</a></li>
                             <li><a data-toggle="tab" href="#menu3">Update 3</a></li>
+                            <li><a data-toggle="tab" href="#menu4">Update 4</a></li>
+                            <li><a data-toggle="tab" href="#menu5">Update 5</a></li>
+                            <li><a data-toggle="tab" href="#menu6">Final Update</a></li>
                         </ul>
                     </div>
                 </div>
@@ -126,8 +130,53 @@
                             <img width="100%" alt="" src="img/IMG_20161213_201511.jpg">
                         </p>
                     </div>
+                    <div id="menu4" class="tab-pane fade">
+                        <p>
+                            Tijdens de eerste week van de kerst vakantie ben ik tot de ontdekking gekomen dat mijn raspberry pi waar al mijn data opstond (databank, webserver, python, mqtt broker) gecrashed is. De rasberry pi zelf werkt nog maar het kaartje dat er instak deed niets meer. Door dit voorval heb ik een snelle keuze moeten maken en heb ik gekozen om een oudere kleinere laptop te gebruiken om heel mijn linux met databank, webserver, mqtt broker, ... op te installeren. Dit heeft wel wat tijd gekost om alles terug op te bouwen. Maar na een goede dag werken was dit allemaal terug up and running.
+                        </p>
+                    </div>
+                    <div id="menu5" class="tab-pane fade">
+                        <p>
+                            Na de examens die ik de komende periode had, ben ik terug begonnen aan het afwerken van mijn project. Zo heb ik mijn webapp opgebouwd. Eerst heb ik alle data laten displayen op mijn pagina om te zien of dit werkte. Hierna heb ik aan de hand van php een paar API's geschreven die van mijn data JSON bestanden maakte. Aan de hand van deze API's heb ik mijn data kunnen omzetten in grafieken. Voor de grafieken op te bouwen heb ik gebruik gemaakt van google charts linegraph. Deze werkte vlot en ziet er goed uit. Buiten de grafieken voor temperatuur en licht heb ik ook gezien dat er boven aan de pagina de laatste waarde staat die op dat moment op de arduino staat. Deze laatste waarden worden elke 5 seconden refreshed, de reden voor de 5 seconden is namelijk dat de arduino om de 10 seconden data uitstuurd naar de databank en ik deze laatste data zeker wil hebben. Hierdoor gekozen voor de 5 seconden zodat ik deze zeker niet miste.<br><br>
+                            <img width="100%" alt="" src="img/website.jpg">
+                        </p>
+                    </div>
+                    <div id="menu6" class="tab-pane fade">
+                        <p>
+                            Voor mijn finale update zou ik toch graag even alles willen overlopen zodat we één mooie recap hebben van alles. Voor de foto's kan je altijd terug grijpen naar de vorige updates.
+                        </p>
+                        <p>
+                            Toen we aan dit project begonnen moesten we uiteraard eerst opzoek naar een arduino met hopelijk ook de gewenste componenten. Na even zoeken was de starterkit van arduino de goede keuze, namelijk deze had vele componenten om me te experimenteren. De website waar we de startkit kochten was kiwi-elektronics. Eens we de kit aangekregen hadden konnen we er aan beginnen. Als eerste stap had ik mijn schakeling opgebouwd met juist de ldr en temperatuur sensor, hiervoor heb ik gebruik gemaakt van de handleiding van de starterkit. En tijdens deze werk sessie heb ik ook ineens mijn ethernet shield toegevoegd zodat deze werkte. De arduino kon na afloop ook alle data omzetten naar makelijk leesbare data.
+                        </p>
+                        <p>
+                            Tijdens de tweede sessie heb ik mijn lcd aangestuurd, dit was niet zo handig omdat ik niet wist hoe ik hier aan moest beginnen. Maar na een beetje zoekwerk en hulp van enkele collega studenten was de lcd opgezet en werkte deze zoals ik wou. Je zag de temperatuur en het licht waarde.
+                        </p>
+                        <p>
+                            Na de lcd opgezet te hebben ben ik begonnen om MQTT op te zetten. Dit is gelukt door hulp van internet en zelf ook een beetje te tweaken tot het werkte. Voor de data om te zetten van de arduino via MQTT naar de databank heb ik gebruik gemaakt van python. Dit was namelijk da snelste en makelijkste manier. Deze fase is niet vlekkenloos verlopen. Het omzetten van de data via python naar de databank was niet makelijk. Maar na vele tweak pogingen is dit wel gelukt.
+                        </p>
+                        <p>
+                            Na heel deze opbouw was ik zeker dat ik niet meer aan mijn arduino zou moeten komen dus ben ik opzoek gegaan hoe ik mijn project in een doosje kon steken voor properder en vooral makelijker vervoer. Ik ben terecht gekomen op een xbox doosje dat ik nog had liggen. Na enkele modificaties te doen kon ik het project hier in monteren.
+                        </p>
+                        <p>
+                            Toen ik eenmaal wou beginnen aan het designen van mijn webapp waar je de grafieken kon bekijken en de huidige waarden kwam ik er achter dat mijn sd kaartje voor mijn raspberry pi gecrashed was. Deze bevatten namelijk al mijn data voor de webserver, databank, mqtt en python. Al een geluk had ik mijn python script nog opgeslagen op mijn computer. Door dit vooral heb ik de keuze gemaakt om een oudere laptop te gebruiken in plaats van de raspberry pi en heb ik alles terug opgezet.
+                        </p>
+                        <p>
+                            Dan kon ik eindelijk beginnen aan mijn webapp met mijn grafieken. Na wat informatie opgezocht te hebben, kon ik op een twee dagen tijd de grafieken opzetten door eerst zelf mijn API's te schrijven en deze te gebruiken om mijn grafieken te bouwen. De grafiek technologie komt van google charts, die zeer vlot en intuitief werken. Hierna heb ik de huidige waarde nog geconfigureerd op de website zodat je deze altijd kan bekijken.
+                        </p>
+                        <p>
+                            Na de webapp opgebouwd te hebben was het project eigenlijk afgelopen. Oef want het examen was de dag erna. Ook kan je het volledige project downloaden in een zip file. Maar door dit project te doen heb ik zelf wel veel bijgeleerd over het IOT platform. Niet alles is zo vanzelf sprekend zoals wij zouden denken. Je moet veel onderzoeken, je moeten veel verschillende technologieën gebruiken om tot 1 oplossing te komen. Wat het project bij mij heeft doen triggeren is om zeker niet te stoppen met het verder onderzoeken van het IOT platform. Heb namelijk al een idee voor een eventueel volgend project.<br><br>Alvast bedankt om mij de komende weken te volgen.<br><br>Met Vriendelijke Groeten<br>Jeroen
+                        </p>
+                    </div>
                 </div>
             </div>
+        </div>
+        <hr>
+        <h2 id="download"><i class="material-icons">file_download</i> Download</h2>
+        <div class="alert">
+            <p>
+                Je kan via volgende link heel het project downloaden als je hier zelf aan wil werken.<br>
+                <a style="color:green;" href="project_embedded_systems_jeroen_hufkens.zip" download>project_embedded_systems.zip</a>
+            </p>
         </div>
         <!-- Code -->
         
@@ -344,7 +393,7 @@ db.close()
     <!-- Footer -->
     <footer>
         <div class="vertical-center">
-            <p style="padding-top:1em;">Design & Copyright Jeroen - Powered By: Arduino & Raspberry Pi</p>
+            <p style="padding-top:1em;">Design & Copyright Jeroen - Powered By: Arduino</p>
         </div>
     </footer>
 </body>
